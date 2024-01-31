@@ -11,10 +11,12 @@
 ---
 
 <h2>目錄</h2>
-<ul>
-  <li><a href="#使用說明">使用說明</a></li>
-  <li><a href="#參考資料">參考資料</a></li>
-</ul>
+
+- [使用說明](#使用說明)
+  - [LINE Notify](#line-notify)
+  - [新增Google Sheets模版](#新增google-sheets模版)
+  - [Google Sheets API](#google-sheets-api)
+- [參考資料](#參考資料)
 
 ## 使用說明
 請依照以下步驟將<code>LINE_NOTIFY_ID</code>、<code>GOOGLE_SHEETS_KEY</code>、<code>GS_CREDENTIALS</code>三個Secrets儲存在GitHub當中。<br>
