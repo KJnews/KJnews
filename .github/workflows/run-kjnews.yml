@@ -21,7 +21,7 @@ jobs:
              pip install undetected-chromedriver
              pip install chromedriver-py
 
-      - name: Run crawler
+      - name: Run KJnews
         run: python main.py
         env: 
           LINE_NOTIFY_ID: ${{ secrets.LINE_NOTIFY_ID }}
