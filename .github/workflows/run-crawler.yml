@@ -1,4 +1,4 @@
-name: Run Crawler
+name: Run KJnews
 
 on:
   schedule:
