@@ -18,7 +18,8 @@
 
 ## 使用說明
 請依照以下步驟將<code>LINE_NOTIFY_ID</code>、<code>GOOGLE_SHEETS_KEY</code>、<code>GS_CREDENTIALS</code>三個Secrets儲存在GitHub當中。<br>
-Fork → Create Fork → Settings → Secrets and variables → Actions → New repository secret
+Fork → Create Fork → Settings → Secrets and variables → Actions → New repository secret<br>
+Actions → I understand my workflows, go ahead and enable them → Enable workflow
 
 
 #### [LINE Notify](https://notify-bot.line.me/)
