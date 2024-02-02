@@ -195,8 +195,9 @@ for category in urls:
         # 找到 nid 的值
         nid = soup.find('tr')['nid']
 
-        link = f'http://www.kjsh.ntpc.edu.tw/ischool/public/news_view/show.php?nid={nid}'
-        content = get_content(link)
+        link_publish = f'http://www.kjsh.ntpc.edu.tw/ischool/public/news_view/show.php?nid={nid}'
+        link = f'lihi.cc/depwP/{nid}'
+        content = get_content(link_publish)
         print(f'date:{date}\tcategory:{category}\ttitle:{title}\tunit:{unit}\tnid:{nid}\tlink:{link}\tcontent:{content}')
 
         # 獲取當前日期
