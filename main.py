@@ -195,7 +195,7 @@ for category in urls:
         # 找到 nid 的值
         nid = soup.find('tr')['nid']
 
-        link = f'lihi.cc/depwP/{nid}'
+        link = f'http://www.kjsh.ntpc.edu.tw/ischool/public/news_view/show.php?nid={nid}'
         content = get_content(link)
         print(f'date:{date}\tcategory:{category}\ttitle:{title}\tunit:{unit}\tnid:{nid}\tlink:{link}\tcontent:{content}')
 
