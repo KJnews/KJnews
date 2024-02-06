@@ -180,8 +180,8 @@ for category in urls:
     numbers_of_new_data = 9
 
     # 印出最新幾筆資料的標題、單位和連結
-    for i in range(1, 1 + numbers_of_new_data):
-        row = rows[i]
+    for i in range(numbers_of_new_data):
+        row = rows[numbers_of_new_data - i]
         # row_html = row.get_attribute('outerHTML')
         # print(row_html)
         cells = row.find_elements(By.TAG_NAME, 'td')
