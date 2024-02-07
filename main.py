@@ -71,24 +71,28 @@ def get_content(url):
   text = text.replace(' ', '')  # 刪除空白
   return text
 
+text_limit = 1000-3
+
 # LINE Notify
 def LINE_Notify(category, date, title, unit, link, content):
+
+  send_info_1 = f'【{category}】{title}\n⦾公告日期：{date}\n⦾發佈單位：{unit}'
+  send_info_2 = f'⦾內容：' if content != '' else ''
+  send_info_3 = f'⦾更多資訊：{link}'
+
+  text_len = len(send_info_1) + len(send_info_2) + len(send_info_3)
+  if content != '' and text_len + len(content) > text_limit:
+    content = content[:(text_limit - text_len)]
+    params_message = f'{send_info_1}\n{send_info_2}{content}\n{send_info_3}'
+  else:
+    params_message = f'{send_info_1}\n{send_info_3}'
+
   for LINE_Notify_ID in LINE_Notify_IDs:
     headers = {
             'Authorization': 'Bearer ' + LINE_Notify_ID,
             'Content-Type': 'application/x-www-form-urlencoded'
         }
-    if content == '':
-        params = {'message': f'''【{category}】{title}
-⦾公告日期：{date}
-⦾發佈單位：{unit}
-⦾更多資訊：{link}'''}
-    else:
-        params = {'message': f'''【{category}】{title}
-⦾公告日期：{date}
-⦾發佈單位：{unit}
-⦾內容：{content}
-⦾更多資訊：{link}'''}
+    params = {'message': params_message}
 
     r = requests.post('https://notify-api.line.me/api/notify',
                             headers=headers, params=params)
