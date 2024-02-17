@@ -11,6 +11,7 @@ import gspread
 import pandas as pd
 import os
 import json
+import sys
 
 # ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
@@ -98,9 +99,14 @@ def LINE_Notify(category, date, title, unit, link, content):
                             headers=headers, params=params)
     print(r.status_code)  #200
 
-# Google Sheets 紀錄
-scope = ['https://www.googleapis.com/auth/spreadsheets']
-info = json.loads(gs_credentials)
+#  gspread.exceptions.APIError: 500 Solution
+try:
+    # Google Sheets 紀錄
+    scope = ['https://www.googleapis.com/auth/spreadsheets']
+    info = json.loads(gs_credentials)
+except APIError as e:
+    print(f"APIError: {e}")
+    sys.exit()
 
 creds = Credentials.from_service_account_info(info, scopes=scope)
 gs = gspread.authorize(creds)
