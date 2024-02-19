@@ -104,8 +104,8 @@ try:
     # Google Sheets 紀錄
     scope = ['https://www.googleapis.com/auth/spreadsheets']
     info = json.loads(gs_credentials)
-except APIError as e:
-    print(f"APIError: {e}")
+except Exception as error:
+    print(f"APIError: {error}")
     sys.exit()
 
 creds = Credentials.from_service_account_info(info, scopes=scope)
