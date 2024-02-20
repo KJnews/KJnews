@@ -48,7 +48,7 @@ Actions → I understand my workflows, go ahead and enable them → Enable workf
 3. <code>GS_CREDENTIALS</code>：複製JSON當中所有的內容<br><br>
    Steps: 
    - 建立專案：選取專案 → 新增專案
-   - 啟用 Google Sheets API：ENABLE APPS AND SERVICES→Google Sheets API → 啟用
+   - 啟用 Google Sheets API：ENABLE APPS AND SERVICES → Google Sheets API → 啟用
    - 新增憑證：憑證 → 建立憑證 → 服務帳戶 → 繼續 → 完成（至Google Sheets共用此服務帳號）
    - 新增金鑰：點擊服務帳戶 → 新增金鑰 → 建立新的金鑰 → JSON
 <br><br>
