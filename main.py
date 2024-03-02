@@ -11,7 +11,6 @@ import gspread
 import pandas as pd
 import os
 import json
-import sys
 
 # ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
@@ -82,8 +81,9 @@ def LINE_Notify(category, date, title, unit, link, content):
   send_info_3 = f'⦾更多資訊：{link}'
 
   text_len = len(send_info_1) + len(send_info_2) + len(send_info_3)
-  if content != '' and text_len + len(content) > text_limit:
-    content = content[:(text_limit - text_len)]
+  if content != '':
+    if text_len + len(content) > text_limit:
+      content = f'{content[:(text_limit - text_len)]}⋯'
     params_message = f'{send_info_1}\n{send_info_2}{content}\n{send_info_3}'
   else:
     params_message = f'{send_info_1}\n{send_info_3}'
@@ -99,14 +99,9 @@ def LINE_Notify(category, date, title, unit, link, content):
                             headers=headers, params=params)
     print(r.status_code)  #200
 
-#  gspread.exceptions.APIError: 500 Solution
-try:
-    # Google Sheets 紀錄
-    scope = ['https://www.googleapis.com/auth/spreadsheets']
-    info = json.loads(gs_credentials)
-except Exception as error:
-    print(f"APIError: {error}")
-    sys.exit()
+# Google Sheets 紀錄
+scope = ['https://www.googleapis.com/auth/spreadsheets']
+info = json.loads(gs_credentials)
 
 creds = Credentials.from_service_account_info(info, scopes=scope)
 gs = gspread.authorize(creds)
@@ -124,133 +119,144 @@ def google_sheets_refresh():
   # 使用pandas創建數據框
   df = pd.DataFrame(rows_sheets)
 
-# 開啟網頁
-urls = {
-    '最新消息':'https://www.kjsh.ntpc.edu.tw/ischool/widget/site_news/main2.php?uid=WID_0_2_0175a41dca498eab35e73c7c40fd1c141d1f3a58&maximize=1&allbtn=0' # 最新消息
-    ,'榮譽榜':'https://www.kjsh.ntpc.edu.tw/ischool/widget/site_news/main2.php?uid=WID_0_2_0f31e8a5a7bc3c4ef6609345e33cd3ae6b3e97cc&maximize=1&allbtn=0' # 榮譽榜
-    ,'校務通報':'https://www.kjsh.ntpc.edu.tw/ischool/widget/site_news/main2.php?uid=WID_0_2_b1568f22c498d41d46e53b69325a31e78d51c87c&maximize=1&allbtn=0' # 校務通報
-    ,'研習':'https://www.kjsh.ntpc.edu.tw/ischool/widget/site_news/main2.php?uid=WID_0_2_e04b673ba655cf5fbdbab4e815d941418b3ec90c&maximize=1&allbtn=0'# 研習
-    ,'師生活動與競賽':'https://www.kjsh.ntpc.edu.tw/ischool/widget/site_news/main2.php?uid=WID_0_2_548130b3d109474559de5f5f564d0a729c3c7b3d&maximize=1&allbtn=0' # 師生活動與競賽
-    ,'防疫專區':'https://www.kjsh.ntpc.edu.tw/ischool/widget/site_news/main2.php?uid=WID_0_2_36ca124c0de704b62aead8039c9bbe125095f5aa&maximize=1&allbtn=0' # 防疫專區
-    ,'招標公告':'https://www.kjsh.ntpc.edu.tw/ischool/widget/site_news/main2.php?uid=WID_0_2_27c842d8808109d6838dde8f0c1222d6177d71b8&maximize=1&allbtn=0' #招標公告
-}
+def main():
 
-# 刷新Google Sheets表格
-google_sheets_refresh()
+  # 開啟網頁
+  urls = {
+      '最新消息':'https://www.kjsh.ntpc.edu.tw/ischool/widget/site_news/main2.php?uid=WID_0_2_0175a41dca498eab35e73c7c40fd1c141d1f3a58&maximize=1&allbtn=0' # 最新消息
+      ,'榮譽榜':'https://www.kjsh.ntpc.edu.tw/ischool/widget/site_news/main2.php?uid=WID_0_2_0f31e8a5a7bc3c4ef6609345e33cd3ae6b3e97cc&maximize=1&allbtn=0' # 榮譽榜
+      ,'校務通報':'https://www.kjsh.ntpc.edu.tw/ischool/widget/site_news/main2.php?uid=WID_0_2_b1568f22c498d41d46e53b69325a31e78d51c87c&maximize=1&allbtn=0' # 校務通報
+      ,'研習':'https://www.kjsh.ntpc.edu.tw/ischool/widget/site_news/main2.php?uid=WID_0_2_e04b673ba655cf5fbdbab4e815d941418b3ec90c&maximize=1&allbtn=0'# 研習
+      ,'師生活動與競賽':'https://www.kjsh.ntpc.edu.tw/ischool/widget/site_news/main2.php?uid=WID_0_2_548130b3d109474559de5f5f564d0a729c3c7b3d&maximize=1&allbtn=0' # 師生活動與競賽
+      ,'防疫專區':'https://www.kjsh.ntpc.edu.tw/ischool/widget/site_news/main2.php?uid=WID_0_2_36ca124c0de704b62aead8039c9bbe125095f5aa&maximize=1&allbtn=0' # 防疫專區
+      ,'招標公告':'https://www.kjsh.ntpc.edu.tw/ischool/widget/site_news/main2.php?uid=WID_0_2_27c842d8808109d6838dde8f0c1222d6177d71b8&maximize=1&allbtn=0' #招標公告
+  }
 
-# 取得Google Sheets nids列表
-_nids = df[5].tolist()
-nids = []
-for n in _nids:
-  try:
-    nids.append(str(int(n)))
-  except:
-    continue
+  # 刷新Google Sheets表格
+  google_sheets_refresh()
 
-for category in urls:
+  # 取得Google Sheets nids列表
+  _nids = df[5].tolist()
+  nids = []
+  for n in _nids:
+    try:
+      nids.append(str(int(n)))
+    except:
+      continue
 
-    url = urls[category]
+  for category in urls:
 
-    # chromedriver 設定
-    options = webdriver.ChromeOptions()
-    options.add_argument('--headless')
-    options.add_argument('--no-sandbox')
-    options.add_argument('--disable-dev-shm-usage')
+      url = urls[category]
 
-    service = Service(binary_path)
-    driver = webdriver.Chrome(service=service, options=options)
-    driver.get(url)
+      # chromedriver 設定
+      options = webdriver.ChromeOptions()
+      options.add_argument('--headless')
+      options.add_argument('--no-sandbox')
+      options.add_argument('--disable-dev-shm-usage')
 
-    # 等待網頁載入完成
-    driver.implicitly_wait(10)
+      service = Service(binary_path)
+      driver = webdriver.Chrome(service=service, options=options)
+      driver.get(url)
 
-    # 找到表格元素
-    res = requests.get(url)
-    soup = BeautifulSoup(res.text, 'html.parser')
-    table_div = driver.find_element(By.ID, 'div_table_content')
-    table = table_div.find_element(By.ID, 'ntb')
-    html = table.get_attribute('outerHTML')
+      # 等待網頁載入完成
+      driver.implicitly_wait(10)
 
-    # 解析HTML文件
-    soup = BeautifulSoup(html, 'html.parser')
+      # 找到表格元素
+      res = requests.get(url)
+      soup = BeautifulSoup(res.text, 'html.parser')
+      table_div = driver.find_element(By.ID, 'div_table_content')
+      table = table_div.find_element(By.ID, 'ntb')
+      html = table.get_attribute('outerHTML')
 
-    # 格式化HTML文件
-    formatted_html = soup.prettify()
-    # print(formatted_html)
+      # 解析HTML文件
+      soup = BeautifulSoup(html, 'html.parser')
 
-    # 找到表格中的所有資料列
-    rows = table.find_elements(By.TAG_NAME, 'tr')
+      # 格式化HTML文件
+      formatted_html = soup.prettify()
+      # print(formatted_html)
 
-    # 打印每一行的 HTML 內容
-    # for row in rows:
-    #     row_html = row.get_attribute('outerHTML')
-    #     print(row_html)
+      # 找到表格中的所有資料列
+      rows = table.find_elements(By.TAG_NAME, 'tr')
 
-    # 定義需要查找的最新幾筆資料（最多9筆）
-    numbers_of_new_data = 9
+      # 打印每一行的 HTML 內容
+      # for row in rows:
+      #     row_html = row.get_attribute('outerHTML')
+      #     print(row_html)
 
-    # 印出最新幾筆資料的標題、單位和連結
-    for i in range(numbers_of_new_data):
-        row = rows[numbers_of_new_data - i]
-        # row_html = row.get_attribute('outerHTML')
-        # print(row_html)
-        cells = row.find_elements(By.TAG_NAME, 'td')
-        date = cells[1].text
-        title = cells[3].text
-        unit = cells[2].text
+      # 定義需要查找的最新幾筆資料（最多9筆）
+      numbers_of_new_data = 9
 
-        # 使用 BeautifulSoup 解析 HTML
-        soup = BeautifulSoup(row.get_attribute('outerHTML'), 'html.parser')
+      # 印出最新幾筆資料的標題、單位和連結
+      for i in range(numbers_of_new_data):
+          row = rows[numbers_of_new_data - i]
+          # row_html = row.get_attribute('outerHTML')
+          # print(row_html)
+          cells = row.find_elements(By.TAG_NAME, 'td')
+          date = cells[1].text
+          title = cells[3].text
+          unit = cells[2].text
 
-        # 找到 nid 的值
-        nid = soup.find('tr')['nid']
+          # 使用 BeautifulSoup 解析 HTML
+          soup = BeautifulSoup(row.get_attribute('outerHTML'), 'html.parser')
 
-        link_publish = f'http://www.kjsh.ntpc.edu.tw/ischool/public/news_view/show.php?nid={nid}'
-        link = f'lihi.cc/depwP/{nid}'
-        content = get_content(link_publish)
-        print(f'date:{date}\tcategory:{category}\ttitle:{title}\tunit:{unit}\tnid:{nid}\tlink:{link}\tcontent:{content}')
+          # 找到 nid 的值
+          nid = soup.find('tr')['nid']
 
-        # 獲取當前日期
-        today = datetime.date.today()
+          link_publish = f'http://www.kjsh.ntpc.edu.tw/ischool/public/news_view/show.php?nid={nid}'
+          link = f'lihi.cc/depwP/{nid}'
+          content = get_content(link_publish)
+          print(f'date:{date}\tcategory:{category}\ttitle:{title}\tunit:{unit}\tnid:{nid}\tlink:{link}\tcontent:{content}')
 
-        # 將日期格式化為2023/02/11的形式
-        formatted_date = today.strftime("%Y/%m/%d")
+          # 獲取當前日期
+          today = datetime.date.today()
 
-        # 檢查nid是否已經存在於表格中
-        sent = not(str(int(nid)) in nids)
+          # 將日期格式化為2023/02/11的形式
+          formatted_date = today.strftime("%Y/%m/%d")
 
-        if sent:
+          # 檢查nid是否已經存在於表格中
+          sent = not(str(int(nid)) in nids)
 
-          # 檢查標題是否已經存在於表格中
-          titles = df[3].tolist()
-          if title in titles:
-            continue
+          if sent:
 
-          # 獲取新行
-          now = datetime.datetime.now() + datetime.timedelta(hours=8)
-          new_row = [now.strftime("%Y-%m-%d %H:%M:%S"), category, date, title, unit, nid, link, content]
+            # 檢查標題是否已經存在於表格中
+            titles = df[3].tolist()
+            if title in titles:
+              continue
 
-          # 將新行添加到工作表中
-          worksheet.append_row(new_row)
+            # 獲取新行
+            now = datetime.datetime.now() + datetime.timedelta(hours=8)
+            new_row = [now.strftime("%Y-%m-%d %H:%M:%S"), category, date, title, unit, nid, link, content]
 
-          # 獲取新行的索引
-          new_row_index = len(rows) + 1
+            # 將新行添加到工作表中
+            worksheet.append_row(new_row)
 
-          # 更新單元格
-          cell_list = worksheet.range('A{}:H{}'.format(new_row_index, new_row_index))
-          for cell, value in zip(cell_list, new_row):
-              cell.value = value
-          worksheet.update_cells(cell_list)
+            # 獲取新行的索引
+            new_row_index = len(rows) + 1
 
-          # 更新nids列表
-          nids.append(int(nid))
+            # 更新單元格
+            cell_list = worksheet.range('A{}:H{}'.format(new_row_index, new_row_index))
+            for cell, value in zip(cell_list, new_row):
+                cell.value = value
+            worksheet.update_cells(cell_list)
 
-          # 傳送至LINE Notify
-          print(f'Sent: {nid}', end=' ')
-          LINE_Notify(category, date, title, unit, link, content)
+            # 更新nids列表
+            nids.append(int(nid))
 
-        # 刪除nid
-        del nid
+            # 傳送至LINE Notify
+            print(f'Sent: {nid}', end=' ')
+            LINE_Notify(category, date, title, unit, link, content)
 
-    # 關閉網頁
-    driver.quit()
+          # 刪除nid
+          del nid
+
+      # 關閉網頁
+      driver.quit()
+
+if __name__ == "__main__":
+  try_times_limit = 2
+  for _ in range(try_times_limit):
+    try:
+      main()
+      break
+    except:
+      next
