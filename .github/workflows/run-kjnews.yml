@@ -11,10 +11,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: '3.12'
+
       - name: Install dependencies
         run: |
           pip install --upgrade pip
@@ -22,6 +24,7 @@ jobs:
           pip install webdriver-manager selenium
           pip install undetected-chromedriver
           pip install chromedriver-py
+          pip install webdriver-manager
           pip install pyarrow
 
       - name: Run KJnews
