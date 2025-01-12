@@ -34,5 +34,6 @@ jobs:
         env: 
           LINE_NOTIFY_ID: ${{ secrets.LINE_NOTIFY_ID }}
           GROUP_ID: ${{ secrets.GROUP_ID }}
+          MESSAGE_POST_URL: ${{ secrets.MESSAGE_POST_URL }}
           GOOGLE_SHEETS_KEY: ${{ secrets.GOOGLE_SHEETS_KEY }}
           GS_CREDENTIALS: ${{ secrets.GS_CREDENTIALS }}

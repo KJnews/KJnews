@@ -18,6 +18,7 @@ import json
 # Variables - GitHub
 line_notify_id = os.environ['LINE_NOTIFY_ID']
 group_id = os.environ['GROUP_ID']
+message_post_url = os.environ['MESSAGE_POST_URL']
 sheet_key = os.environ['GOOGLE_SHEETS_KEY']
 gs_credentials = os.environ['GS_CREDENTIALS']
 service = Service(ChromeDriverManager().install())
@@ -25,6 +26,7 @@ service = Service(ChromeDriverManager().install())
 # Variables - Google Colab
 # line_notify_id = LINE_NOTIFY_ID
 # group_id = GROUP_ID
+# message_post_url = MESSAGE_POST_URL
 # sheet_key = GOOGLE_SHEETS_KEY
 # gs_credentials = GS_CREDENTIALS
 # service = Service(binary_path)
