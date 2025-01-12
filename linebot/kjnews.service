@@ -1,0 +1,14 @@
+[Unit]
+Description=Startup script for KJNews and Ngrok
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/bin/bash -c '/home/<username>/kjnews/venv/bin/python /home/<username>/kjnews/app.py & /bin/bash /home/<username>/kjnews/ngrok_startup.sh'
+Restart=always
+RestartSec=5
+User=<username>
+WorkingDirectory=/home/<username>/kjnews
+
+[Install]
+WantedBy=multi-user.target

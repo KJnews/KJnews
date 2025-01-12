@@ -1,12 +1,45 @@
 # LINE BOT Setup
 
+## *kjnews* folder
+```
+kjnews
+│   .env
+│   requirements.txt
+│   ngrok_startup.sh
+│   app.py
+│   log.log
+└───venv
+```
 
+## LINE bot
+Create a LINE bot from [LINE Official Account Manager](https://manager.line.biz/). Then enable `Allow bot to join group chats`, disable `Auto-reply messages` and `Greeting messages` in the console. 
+
+## Setup ngrok (Ubuntu)
+Ref: [ngrok webiste](https://ngrok.com/), [ngrok docs](https://ngrok.com/docs/guides/device-gateway/linux/)
+
+Install the ngrok Agent
+```shell=
+wget https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz
+sudo tar xvzf ./ngrok-v3-stable-linux-amd64.tgz -C /usr/local/bin
+ngrok authtoken NGROK_AUTHTOKEN
+```
+
+## Inside the *kjnews* folder
+
+### .env
+Issue `CHANNEL_ACCESS_TOKEN` and get `CHANNEL_SECRET` from [Messaging API](https://developers.line.biz/console/). 
+
+### app.py
+Use venv by `python -m venv venv`, and install requirements inside `requirements.txt`. 
+
+### ngrok_startup.sh
+Replace `<ngrok-url>` from *[Static Domain](https://dashboard.ngrok.com/get-started/setup/linux)*. 
 
 ## Using Systemd To Run Scripts When Startup
 1. Create a Systemd Service file:
 `sudo nano /etc/systemd/system/kjnews.service`
 2. Add the following content to the file: 
-    ```service
+    ```=
     [Unit]
     Description=Startup script for KJNews and Ngrok
     After=network.target
