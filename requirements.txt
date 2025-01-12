@@ -4,3 +4,8 @@ selenium
 pandas
 gspread
 google-auth
+
+python-dotenv
+line-bot-sdk
+flask
+flask_ngrok

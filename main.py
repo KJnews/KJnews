@@ -17,12 +17,14 @@ import json
 
 # Variables - GitHub
 line_notify_id = os.environ['LINE_NOTIFY_ID']
+group_id = os.environ['GROUP_ID']
 sheet_key = os.environ['GOOGLE_SHEETS_KEY']
 gs_credentials = os.environ['GS_CREDENTIALS']
 service = Service(ChromeDriverManager().install())
 
 # Variables - Google Colab
 # line_notify_id = LINE_NOTIFY_ID
+# group_id = GROUP_ID
 # sheet_key = GOOGLE_SHEETS_KEY
 # gs_credentials = GS_CREDENTIALS
 # service = Service(binary_path)
@@ -31,6 +33,9 @@ service = Service(ChromeDriverManager().install())
 
 # LINE Notify ID
 LINE_Notify_IDs = list(line_notify_id.split())
+
+# Group ID
+GRUOP_IDs = list(group_id.split())
 
 # 定義查找nid代碼函數
 def find_nid(title, text):
@@ -76,8 +81,8 @@ def get_content(url):
 
 text_limit = 1000-3
 
-# LINE Notify
-def LINE_Notify(category, date, title, unit, link, content):
+# Process message
+def Process_Message(category, date, title, unit, link, content):
 
   send_info_1 = f'【{category}】{title}\n⦾公告日期：{date}\n⦾發佈單位：{unit}'
   send_info_2 = f'⦾內容：' if content != '' else ''
@@ -90,17 +95,52 @@ def LINE_Notify(category, date, title, unit, link, content):
     params_message = f'{send_info_1}\n{send_info_2}{content}\n{send_info_3}'
   else:
     params_message = f'{send_info_1}\n{send_info_3}'
+  
+  return params_message
 
-  for LINE_Notify_ID in LINE_Notify_IDs:
+# LINE Notify
+def LINE_Notify(message, LINE_Notify_ID):
+
+  headers = {
+          'Authorization': 'Bearer ' + LINE_Notify_ID,
+          'Content-Type': 'application/x-www-form-urlencoded'
+      }
+  params = {'message': message}
+
+  r = requests.post('https://notify-api.line.me/api/notify',
+                          headers=headers, params=params)
+  print(r.status_code)  #200
+
+# Send to LINE Bot
+def send_to_linebot(id, message, send_to_group=False):
+    """
+    Send a message to a LINE user or group.
+
+    Parameters:
+    id (str): The user ID or group ID.
+    message (str): The message to send.
+    send_to_group (bool): Whether to send the message to a group. Default is False.
+    """
+    # URL of the Flask application running on another machine
+    url = "https://ethical-patient-gazelle.ngrok-free.app/send_message"
+
+    # Data to be sent in the POST request
+    data = {
+        "group_id" if send_to_group else "user_id": id,
+        "message": message
+    }
+
+    # Headers for the POST request
     headers = {
-            'Authorization': 'Bearer ' + LINE_Notify_ID,
-            'Content-Type': 'application/x-www-form-urlencoded'
-        }
-    params = {'message': params_message}
+        "Content-Type": "application/json"
+    }
 
-    r = requests.post('https://notify-api.line.me/api/notify',
-                            headers=headers, params=params)
-    print(r.status_code)  #200
+    # Send the POST request
+    response = requests.post(url, headers=headers, data=json.dumps(data))
+
+    # Print the response
+    print(f"Status Code: {response.status_code}")
+    print(f"Response: {response.json()}")
 
 # Google Sheets 紀錄
 scope = ['https://www.googleapis.com/auth/spreadsheets']
@@ -244,9 +284,18 @@ def main():
             # 更新nids列表
             nids.append(int(nid))
 
+            # 處理訊息
+            params_message = Process_Message(category, date, title, unit, link, content)
+
             # 傳送至LINE Notify
             print(f'Sent: {nid}', end=' ')
-            LINE_Notify(category, date, title, unit, link, content)
+            for LINE_Notify_ID in LINE_Notify_IDs:
+              LINE_Notify(params_message, LINE_Notify_ID)
+
+            # 傳送至LINE Bot
+            for group_id in GRUOP_IDs:
+              send_to_linebot(group_id, params_message, send_to_group=True)
+
 
           # 刪除nid
           del nid

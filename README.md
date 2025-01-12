@@ -19,19 +19,14 @@
 - [參考資料](#參考資料)
 
 ## 使用說明
-請依照以下步驟將<code>LINE_NOTIFY_ID</code>、<code>GOOGLE_SHEETS_KEY</code>、<code>GS_CREDENTIALS</code>三個Secrets儲存在GitHub當中。<br>
+請依照以下步驟將<code>GROUP_ID</code>、<code>GOOGLE_SHEETS_KEY</code>、<code>GS_CREDENTIALS</code>三個Secrets儲存在GitHub當中。<br>
 Fork → Create Fork → Settings → Secrets and variables → Actions → New repository secret<br>
 Actions → I understand my workflows, go ahead and enable them → Enable workflow
 
 
-#### [LINE Notify](https://notify-bot.line.me/)
-1. <code>LINE_NOTIFY_ID</code>：如果有多個，可以用空格分開<br><br>
-   Steps:<br>
-   個人頁面 → 發行權杖<br><br>
-   > Example:
-   > ```
-   > LINE_NOTIFY_ID_1 LINE_NOTIFY_ID_2
-   > ```
+#### [LINE Message](https://notify-bot.line.me/)
+1. <code>GROUP_ID</code>：如果有多個，可以用空格分開<br><br>
+   可以從linebot/flask_json.py截取到`groupId`及`userId`
 
 
 #### [新增Google Sheets模版](https://lihi.cc/E4Zjs)
