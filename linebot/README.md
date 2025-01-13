@@ -10,6 +10,7 @@
   - [app.py](#apppy)
   - [ngrok_startup.sh](#ngrok_startupsh)
 - [Using Systemd To Run Scripts When Startup](#using-systemd-to-run-scripts-when-startup)
+- [Run inside a Docker Container](#run-inside-a-docker-container)
 - [References](#references)
   - [LINE](#line)
 
@@ -34,7 +35,7 @@ Install the ngrok Agent
 ```shell=
 wget https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz
 sudo tar xvzf ./ngrok-v3-stable-linux-amd64.tgz -C /usr/local/bin
-ngrok authtoken NGROK_AUTHTOKEN
+ngrok authtoken <NGROK_AUTHTOKEN>
 ```
 
 ## Inside the *kjnews* folder
@@ -77,6 +78,11 @@ Replace `<ngrok-url>` from *[Static Domain](https://dashboard.ngrok.com/get-star
 `sudo systemctl enable kjnews.service`
 6. Log View (Optional)
 `journalctl -u kjnews.service -f`
+
+## Run inside a Docker Container
+1. Replace `<NGROK_AUTHTOKEN>` from [ngrok](https://dashboard.ngrok.com/get-started/setup/linux). 
+2. Build image: `docker build -t kjnews-linebot .`
+3. Run docker: `docker run kjnews-linebot`
 
 ## References
 - [建立並串接 Webhook](https://steam.oxxostudio.tw/category/python/example/line-webhook.html)
