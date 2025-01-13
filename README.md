@@ -33,7 +33,9 @@ Actions → I understand my workflows, go ahead and enable them → Enable workf
 2. <code>MESSAGE_POST_URL</code><br><br>
    從ngrok免費方案串接的URL會是這個格式：<br>
    https://<...>.ngrok-free.app/send_message
-   <br>（後面記得要加`send_message`）
+   <br>（後面記得要加 `/send_message`）
+   <br>若是在LINE Developers上設定Webhook URL則是 `/callback`：
+   https://<...>.ngrok-free.app/callback
 
 
 #### [新增Google Sheets模版](https://lihi.cc/E4Zjs)
