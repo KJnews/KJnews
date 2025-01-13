@@ -19,23 +19,25 @@
 - [參考資料](#參考資料)
 
 ## 使用說明
-請依照以下步驟將<code>LINE_NOTIFY_ID</code>、<code>GOOGLE_SHEETS_KEY</code>、<code>GS_CREDENTIALS</code>三個Secrets儲存在GitHub當中。<br>
+請依照以下步驟將 <code>GROUP_ID</code> 、 <code>MESSAGE_POST_URL</code> 、 <code>GOOGLE_SHEETS_KEY</code> 、 <code>GS_CREDENTIALS</code> 四個Secrets儲存在GitHub當中。<br>
 Fork → Create Fork → Settings → Secrets and variables → Actions → New repository secret<br>
 Actions → I understand my workflows, go ahead and enable them → Enable workflow
 
 
-#### [LINE Notify](https://notify-bot.line.me/)
-1. <code>LINE_NOTIFY_ID</code>：如果有多個，可以用空格分開<br><br>
-   Steps:<br>
-   個人頁面 → 發行權杖<br><br>
-   > Example:
-   > ```
-   > LINE_NOTIFY_ID_1 LINE_NOTIFY_ID_2
-   > ```
+#### [LINE Message](https://notify-bot.line.me/)
+1. <code>GROUP_ID</code>：如果有多個，可以用空格分開<br><br>
+   可以從linebot/flask_json.py截取到`groupId`及`userId`
+
+
+#### [ngrok](https://ngrok.com/)
+2. <code>MESSAGE_POST_URL</code><br><br>
+   從ngrok免費方案串接的URL會是這個格式：<br>
+   https://<...>.ngrok-free.app/send_message
+   <br>（後面記得要加`send_message`）
 
 
 #### [新增Google Sheets模版](https://lihi.cc/E4Zjs)
-2. <code>GOOGLE_SHEETS_KEY</code>：在`https://docs.google.com/spreadsheets/d/`後的一串金鑰<br><br>
+3. <code>GOOGLE_SHEETS_KEY</code>：在`https://docs.google.com/spreadsheets/d/`後的一串金鑰<br><br>
    Steps: <br>
    建立副本 → 複製Google Sheets Key<br><br>
    > Example:
@@ -45,7 +47,7 @@ Actions → I understand my workflows, go ahead and enable them → Enable workf
 
 
 #### [Google Sheets API](https://console.cloud.google.com/apis/dashboard)
-3. <code>GS_CREDENTIALS</code>：複製JSON當中所有的內容<br><br>
+4. <code>GS_CREDENTIALS</code>：複製JSON當中所有的內容<br><br>
    Steps: 
    - 建立專案：選取專案 → 新增專案
    - 啟用 Google Sheets API：ENABLE APPS AND SERVICES → Google Sheets API → 啟用

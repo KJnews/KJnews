@@ -1,10 +1,4 @@
 requests
-beautifulsoup4
-selenium
-pandas
-gspread
-google-auth
-
 python-dotenv
 line-bot-sdk
 flask
