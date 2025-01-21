@@ -29,8 +29,12 @@ Actions → I understand my workflows, go ahead and enable them → Enable workf
    可以從linebot/flask_json.py截取到`groupId`及`userId`
 
 
+#### [Discord Developer Portal](https://discord.com/developers/applications)
+2. <code>DISCORD_TOKEN</code>、<code>DISCORD_GUILD_ID</code>、<code>DISCORD_CHANNEL_ID</code>：邀請BOT至群組內，並取得BOT的`DISCORD_TOKEN`及群組的`DISCORD_GUILD_ID`、`DISCORD_CHANNEL_ID`。
+
+
 #### [ngrok](https://ngrok.com/)
-2. <code>MESSAGE_POST_URL</code><br><br>
+3. <code>MESSAGE_POST_URL</code><br><br>
    從ngrok免費方案串接的URL會是這個格式：<br>
    https://<...>.ngrok-free.app/send_message
    <br>（後面記得要加 `/send_message`）
@@ -39,7 +43,7 @@ Actions → I understand my workflows, go ahead and enable them → Enable workf
 
 
 #### [新增Google Sheets模版](https://lihi.cc/E4Zjs)
-3. <code>GOOGLE_SHEETS_KEY</code>：在`https://docs.google.com/spreadsheets/d/`後的一串金鑰<br><br>
+4. <code>GOOGLE_SHEETS_KEY</code>：在`https://docs.google.com/spreadsheets/d/`後的一串金鑰<br><br>
    Steps: <br>
    建立副本 → 複製Google Sheets Key<br><br>
    > Example:
@@ -49,7 +53,7 @@ Actions → I understand my workflows, go ahead and enable them → Enable workf
 
 
 #### [Google Sheets API](https://console.cloud.google.com/apis/dashboard)
-4. <code>GS_CREDENTIALS</code>：複製JSON當中所有的內容<br><br>
+5. <code>GS_CREDENTIALS</code>：複製JSON當中所有的內容<br><br>
    Steps: 
    - 建立專案：選取專案 → 新增專案
    - 啟用 Google Sheets API：ENABLE APPS AND SERVICES → Google Sheets API → 啟用
