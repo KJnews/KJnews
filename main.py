@@ -198,7 +198,18 @@ def main():
   }
 
   # 刷新Google Sheets表格
-  google_sheets_refresh()
+  google_sheets_refresh_retry_limit = 3
+  google_sheets_refresh_not_done = True
+  for _ in range(google_sheets_refresh_retry_limit):
+    try:
+      google_sheets_refresh()
+      google_sheets_refresh_not_done = False
+      break
+    except Exception as e:
+      print(f'google_sheets_refresh error: {e}\nretrying...')
+  if google_sheets_refresh_not_done:
+    print('google_sheets_refresh failed.')
+    os._exit(0)
 
   # 取得Google Sheets nids列表
   _nids = df[5].tolist()
