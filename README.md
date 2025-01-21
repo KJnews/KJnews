@@ -19,7 +19,8 @@
 - [參考資料](#參考資料)
 
 ## 使用說明
-請依照以下步驟將 <code>GROUP_ID</code> 、 <code>MESSAGE_POST_URL</code> 、 <code>GOOGLE_SHEETS_KEY</code> 、 <code>GS_CREDENTIALS</code> 四個Secrets儲存在GitHub當中。<br>
+請依照以下步驟將 <code>GROUP_ID</code> 、 <code>MESSAGE_POST_URL</code> 、 
+<code>GOOGLE_SHEETS_KEY</code> 、 <code>GS_CREDENTIALS</code>（、<code>DISCORD_TOKEN</code>、<code>DISCORD_GUILD_ID</code>、<code>DISCORD_CHANNEL_ID</code>） 四個Secrets儲存在GitHub當中。<br>
 Fork → Create Fork → Settings → Secrets and variables → Actions → New repository secret<br>
 Actions → I understand my workflows, go ahead and enable them → Enable workflow
 
