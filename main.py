@@ -9,6 +9,7 @@ import requests
 import datetime
 from google.oauth2.service_account import Credentials
 import gspread
+import discord
 import pandas as pd
 import os
 import json
@@ -19,6 +20,9 @@ import json
 line_notify_id = os.environ['LINE_NOTIFY_ID']
 group_id = os.environ['GROUP_ID']
 message_post_url = os.environ['MESSAGE_POST_URL']
+discord_token = os.environ['DISCORD_TOKEN']
+discord_guild_id = int(os.environ['DISCORD_GUILD_ID'])
+discord_channel_id = int(os.environ['DISCORD_CHANNEL_ID'])
 sheet_key = os.environ['GOOGLE_SHEETS_KEY']
 gs_credentials = os.environ['GS_CREDENTIALS']
 service = Service(ChromeDriverManager().install())
@@ -124,7 +128,7 @@ def send_to_linebot(id, message, send_to_group=False):
     send_to_group (bool): Whether to send the message to a group. Default is False.
     """
     # URL of the Flask application running on another machine
-    url = "https://ethical-patient-gazelle.ngrok-free.app/send_message"
+    url = message_post_url
 
     # Data to be sent in the POST request
     data = {
@@ -143,6 +147,22 @@ def send_to_linebot(id, message, send_to_group=False):
     # Print the response
     print(f"Status Code: {response.status_code}")
     print(f"Response: {response.json()}")
+
+# Discord 發送
+def dc_send(message, token, guild_id, channel_id):
+
+    intents = discord.Intents.default()
+    client = discord.Client(intents=intents)
+
+    @client.event
+    async def on_ready():
+        print(f'We have logged in as {client.user}')
+        guild = discord.utils.get(client.guilds, id=guild_id)
+        channel = discord.utils.get(guild.channels, id=channel_id)
+        await channel.send(message)
+        await client.close()
+
+    client.run(token)
 
 # Google Sheets 紀錄
 scope = ['https://www.googleapis.com/auth/spreadsheets']
@@ -298,6 +318,8 @@ def main():
             for group_id in GRUOP_IDs:
               send_to_linebot(group_id, params_message, send_to_group=True)
 
+            # 傳送至Discord
+            dc_send(params_message, discord_token, discord_guild_id, discord_channel_id)
 
           # 刪除nid
           del nid
