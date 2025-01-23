@@ -79,13 +79,13 @@ def get_content(url):
   for p in p_tags:
       text = p.text.strip()
       text_list.append(text)
-  text = ' '.join(text_list)
-  text = ' '.join(text.split())  # 利用 split() 和 join() 將多個空白轉成單一空白
+  text = '\n'.join(text_list)
+  # text = ' '.join(text.split())  # 利用 split() 和 join() 將多個空白轉成單一空白
   # text = text.replace(' ', '\n')  # 將空白轉換成換行符號
-  text = text.replace(' ', '')  # 刪除空白
+  # text = text.replace(' ', '')  # 刪除空白
   return text
 
-text_limit = 1000-3
+# text_limit = 1000-3
 
 # Process message
 def Process_Message(category, date, title, unit, link, content):
@@ -96,8 +96,8 @@ def Process_Message(category, date, title, unit, link, content):
 
   text_len = len(send_info_1) + len(send_info_2) + len(send_info_3)
   if content != '':
-    if text_len + len(content) > text_limit:
-      content = f'{content[:(text_limit - text_len)]}⋯'
+    # if text_len + len(content) > text_limit:
+    #   content = f'{content[:(text_limit - text_len)]}⋯'
     params_message = f'{send_info_1}\n{send_info_2}{content}\n{send_info_3}'
   else:
     params_message = f'{send_info_1}\n{send_info_3}'
@@ -220,6 +220,9 @@ def main():
     except:
       continue
 
+    # 初始化LINE訊息列表
+    line_message_list = []
+
   for category in urls:
 
       url = urls[category]
@@ -325,18 +328,27 @@ def main():
             for LINE_Notify_ID in LINE_Notify_IDs:
               LINE_Notify(params_message, LINE_Notify_ID)
 
-            # 傳送至LINE Bot
-            for group_id in GRUOP_IDs:
-              send_to_linebot(group_id, params_message, send_to_group=True)
+            # # 傳送至LINE Bot
+            # for group_id in GRUOP_IDs:
+            #   send_to_linebot(group_id, params_message, send_to_group=True)
 
             # 傳送至Discord
             dc_send(params_message, discord_token, discord_guild_id, discord_channel_id)
+
+            # 儲存總覽訊息
+            line_message_list.append(Process_Message(category, date, title, unit, link))
 
           # 刪除nid
           del nid
 
       # 關閉網頁
       driver.quit()
+  
+  # 傳送總覽訊息至LINE Bot
+  line_message = '\n\n'.join(line_message_list)
+  for group_id in GRUOP_IDs:
+    send_to_linebot(group_id, line_message, send_to_group=True)
+  
 
 if __name__ == "__main__":
   try_times_limit = 2
