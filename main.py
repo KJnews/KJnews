@@ -345,10 +345,12 @@ def main():
       driver.quit()
   
   # 傳送總覽訊息至LINE Bot
-  line_message = '\n\n'.join(line_message_list)
-  print(line_message)
-  for group_id in GRUOP_IDs:
-    send_to_linebot(group_id, line_message, send_to_group=True)
+  if len(line_message_list) > 0:
+      line_message = '\n\n'.join(line_message_list)
+      print(line_message)
+      
+      for group_id in GRUOP_IDs:
+        send_to_linebot(group_id, line_message, send_to_group=True)
   
 
 if __name__ == "__main__":
