@@ -280,8 +280,8 @@ def main():
           # 找到 nid 的值
           nid = soup.find('tr')['nid']
 
-          link_publish = f'http://www.kjsh.ntpc.edu.tw/ischool/public/news_view/show.php?nid={nid}'
-          link = f'lihi.cc/depwP/{nid}'
+          link_publish = f'https://www.kjsh.ntpc.edu.tw/ischool/public/news_view/show.php?nid={nid}'
+          link = f'https://lihi.cc/depwP/{nid}'
           content = get_content(link_publish)
           print(f'date:{date}\tcategory:{category}\ttitle:{title}\tunit:{unit}\tnid:{nid}\tlink:{link}\tcontent:{content}')
 
