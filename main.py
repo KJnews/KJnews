@@ -88,7 +88,7 @@ def get_content(url):
 # text_limit = 1000-3
 
 # Process message
-def Process_Message(category, date, title, unit, link, content):
+def Process_Message(category, date, title, unit, link, content=''):
 
   send_info_1 = f'【{category}】{title}\n⦾公告日期：{date}\n⦾發佈單位：{unit}'
   send_info_2 = f'⦾內容：' if content != '' else ''
@@ -338,6 +338,7 @@ def main():
 
             # 儲存總覽訊息
             line_message_list.append(Process_Message(category, date, title, unit, link))
+            print(f'nid:{nid} saved to line_message_list.')
 
           # 刪除nid
           del nid
