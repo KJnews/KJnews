@@ -325,9 +325,9 @@ def main():
             params_message = Process_Message(category, date, title, unit, link, content)
 
             # 傳送至LINE Notify
-            print(f'Sent: {nid}', end=' ')
-            for LINE_Notify_ID in LINE_Notify_IDs:
-              LINE_Notify(params_message, LINE_Notify_ID)
+            # print(f'Sent: {nid}', end=' ')
+            # for LINE_Notify_ID in LINE_Notify_IDs:
+            #   LINE_Notify(params_message, LINE_Notify_ID)
 
             # # 傳送至LINE Bot
             # for group_id in GRUOP_IDs:
